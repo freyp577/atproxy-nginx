@@ -1,0 +1,39 @@
+# forward https traffic to upstream nginx
+#
+server {
+    listen       {{production}}:443 ssl;
+    server_name  autorentool.haufe.de;
+    proxy_read_timeout 600s;
+
+    # enable SSL
+    ssl_certificate      /etc/nginx/ssl/autorentool.haufe.de.crt;
+    ssl_certificate_key  /etc/nginx/ssl/autorentool.haufe.de.key;
+
+    #ssl_session_cache shared:SSL:1m;
+    ssl_session_timeout  5m;
+
+    #ssl_ciphers  HIGH:!aNULL:!MD5;
+    #ssl_prefer_server_ciphers   on;
+
+    #root /etc/nginx/static/;
+    #error_page 403 /forbidden.html;
+    
+    # redirecting to upstream nginx, pass real IP on
+    # https://rtcamp.com/tutorials/nginx/forwarding-visitors-real-ip/
+    proxy_set_header        X-Real-IP       $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    
+    proxy_set_header SCHEME $scheme;      # http/https
+    proxy_set_header CLIENT_CERT $ssl_client_raw_cert;
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_set_header X-Scheme $scheme;
+    proxy_set_header Host $host;
+
+  
+    location / {
+      proxy_cache_bypass "1";
+      proxy_pass https://{{active}};
+      break;
+    }
+}
+

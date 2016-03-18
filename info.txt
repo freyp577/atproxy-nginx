@@ -1,0 +1,25 @@
+2016-04-08
+by FreyP 
+
+nginx docker container for AT proxy
+
+design goals:
++ use official nginx container
++ extended to have a parametrized nginx configuration
++ fitted for AT proxy 
++ use environment variables to customize the nginx configuration at container startup time 
++ load SSL certificates from docker host 
+  (for security reasons, do not want to have them in the image / dockerhub repo)
+
+ideas adapted from
++ https://blog.docker.com/2015/04/tips-for-deploying-nginx-official-image-with-docker/
++ http://blog.tryolabs.com/2015/03/26/configurable-docker-containers-for-multiple-environments/
+
+usage: 
+see README.md
+
+build:
+
+docker build -t atproxy-nginx . 
+
+ 
