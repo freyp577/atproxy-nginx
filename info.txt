@@ -29,7 +29,7 @@ docker build -t freyp577/atproxy-nginx:latest .
 docker push freyp577/atproxy-nginx
 
 docker run --rm --env-file ./test.env freyp577/atproxy-nginx more /etc/nginx/conf.d/staging.conf
-
+...  cat /usr/share/nginx/html/bluegreen.json
 
 for testing, use self-signed certificates
 instructins for creation adapted from 

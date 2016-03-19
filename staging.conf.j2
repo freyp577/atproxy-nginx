@@ -3,6 +3,7 @@
 server {
     listen       {{staging}}:443 ssl;
     server_name  at-acceptance.haufe-ep.de;
+    root /usr/share/nginx/html;
     proxy_read_timeout 600s;
 
     # enable SSL
@@ -29,7 +30,12 @@ server {
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Host $host;
 
-  
+ 
+    location /status/ {
+      try_files $uri =404;
+      break;
+    }
+ 
     location / {
       proxy_cache_bypass "1";
       proxy_pass https://{{inactive}};
