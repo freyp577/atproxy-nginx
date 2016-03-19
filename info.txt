@@ -15,11 +15,21 @@ ideas adapted from
 + https://blog.docker.com/2015/04/tips-for-deploying-nginx-official-image-with-docker/
 + http://blog.tryolabs.com/2015/03/26/configurable-docker-containers-for-multiple-environments/
 
+repositories:
+https://github.com/freyp577/atproxy-nginx
+https://hub.docker.com/r/freyp577/atproxy-nginx/
+
+TODO move to Haufe Bitbucket repo
+
 usage: 
 see also README.md
 
-docker build -t atproxy-nginx . 
+docker build -t freyp577/atproxy-nginx:latest . 
 
-docker run --rm --env-file ./test.env atproxy-nginx more /etc/nginx/conf.d/staging.conf
+docker push freyp577/atproxy-nginx
 
+docker run --rm --env-file ./test.env freyp577/atproxy-nginx more /etc/nginx/conf.d/staging.conf
+
+
+TODO mechanism to securely provision SSL certificates
  
