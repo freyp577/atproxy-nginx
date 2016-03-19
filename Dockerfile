@@ -11,11 +11,11 @@ RUN mkdir -p /etc/nginx/ssl
 # leave empty, used mount at runtime from docker host
 #VOLUME /etc/nginx/ssl
 
-#RM /etc/nginx/conf.d/default.conf
+RUN cd /etc/nginx/conf.d && rm default.conf && rm example_ssl.conf
 
-COPY production.conf.j2 /templates/
-COPY staging.conf.j2 /templates/
+COPY *.j2 /templates/
 COPY docker-entrypoint.sh /
+RUN chmod o+x /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]

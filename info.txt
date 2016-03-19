@@ -16,10 +16,10 @@ ideas adapted from
 + http://blog.tryolabs.com/2015/03/26/configurable-docker-containers-for-multiple-environments/
 
 usage: 
-see README.md
-
-build:
+see also README.md
 
 docker build -t atproxy-nginx . 
+
+docker run --rm --env-file ./test.env atproxy-nginx more /etc/nginx/conf.d/staging.conf
 
  

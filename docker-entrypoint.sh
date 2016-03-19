@@ -1,7 +1,11 @@
 #!/bin/bash -e
 
-updateconf /templates/production.conf.j2 >/etc/nginx/conf.d/production.conf
-updateconf /templates/staging.conf.j2 >/etc/nginx/conf.d/staging.conf
+function updateconf {
+  j2 /templates/$1.j2 > $2/$1 
+}
+
+updateconf production.conf /etc/nginx/conf.d/
+updateconf staging.conf /etc/nginx/conf.d/
 
 exec "$@"
 
