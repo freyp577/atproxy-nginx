@@ -31,5 +31,24 @@ docker push freyp577/atproxy-nginx
 docker run --rm --env-file ./test.env freyp577/atproxy-nginx more /etc/nginx/conf.d/staging.conf
 
 
+for testing, use self-signed certificates
+instructins for creation adapted from 
+http://stackoverflow.com/questions/10175812/how-to-create-a-self-signed-certificate-with-openssl
+
+pushd ssl
+openssl req -x509 -newkey rsa:2048 -keyout autorentool.haufe.de.key -out autorentool.haufe.de.crt -days 1  -nodes  -subj '/CN=localhost'
+openssl req -x509 -newkey rsa:2048 -keyout at-acceptance.haufe-ep.de_151027.key -out at-acceptance.haufe-ep.de_151027.crt -days 1  -nodes  -subj '/CN=localhost'
+
+
 TODO mechanism to securely provision SSL certificates
+
+see also
+
+https://hub.docker.com/r/freemountain/nginx-ssl-proxy/
+
+docker run \
+  -e ENABLE_SSL=true \
+  --link <container_id>:target \
+  --volumes-from ssl-data \
+  freemountain/nginx-ssl-proxy
  
