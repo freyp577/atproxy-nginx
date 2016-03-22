@@ -51,4 +51,10 @@ docker run \
   --link <container_id>:target \
   --volumes-from ssl-data \
   freemountain/nginx-ssl-proxy
- 
+
+
+note: in Haufe network, preconditions:
+export HTTPS_PROXY=http://10.12.1.236:8083
+export HTTP_PROXY=http://10.12.1.236:8083
+
+
