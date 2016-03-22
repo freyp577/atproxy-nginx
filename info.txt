@@ -1,5 +1,4 @@
-2016-04-08
-by FreyP 
+updated 2016-04-22 by FreyP 
 
 nginx docker container for AT proxy
 
@@ -19,7 +18,7 @@ repositories:
 https://github.com/freyp577/atproxy-nginx
 https://hub.docker.com/r/freyp577/atproxy-nginx/
 
-TODO move to Haufe Bitbucket repo
+TODO move to Haufe Bitbucket repo (or HRS github.io)
 
 usage: 
 see also README.md
@@ -51,10 +50,15 @@ docker run \
   --link <container_id>:target \
   --volumes-from ssl-data \
   freemountain/nginx-ssl-proxy
+ 
 
+on vl-at-proxy:
 
-note: in Haufe network, preconditions:
-export HTTPS_PROXY=http://10.12.1.236:8083
-export HTTP_PROXY=http://10.12.1.236:8083
+docker run --rm --env-file /opt/atproxy/bin/green.env freyp577/atproxy-nginx more /etc/nginx/conf.d/staging.conf
+... more /etc/nginx/conf.d/production.conf
+... more /usr/share/nginx/html/bluegreen.json
 
+docker run --rm --env-file /opt/atproxy/bin/green.env -v /opt/atproxy/ssl/:/etc/nginx/ssl/:ro freyp577/atproxy-nginx  ls /etc/nginx/ssl
+
+docker run --rm --env-file /opt/atproxy/bin/green.env -v /opt/atproxy/ssl/:/etc/nginx/ssl/:ro freyp577/atproxy-nginx 
 
