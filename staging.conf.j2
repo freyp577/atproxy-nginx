@@ -5,6 +5,11 @@ server {
     server_name  at-acceptance.haufe-ep.de;
     root /usr/share/nginx/html;
     proxy_read_timeout 600s;
+    #keepalive_timeout 75; 
+	# keepalive timout 75 seconds is default, but do not explicitly set unless there is a reason to do that
+	# GH-168 to relax constrains with upload of large image files (TIFF):
+	proxy_read_timeout {{ proxy_read_timeout | default('600s') }};
+	client_max_body_size {{ client_max_body_size | default('250m') }};
 
     # enable SSL
     ssl_certificate      /etc/nginx/ssl/at-acceptance.haufe-ep.de_151028.cert;
