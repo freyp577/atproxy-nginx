@@ -63,20 +63,8 @@ docker run --rm --env-file /opt/atproxy/bin/green.env -v /opt/atproxy/ssl/:/etc/
 
 docker run --rm --env-file /opt/atproxy/bin/green.env -v /opt/atproxy/ssl/:/etc/nginx/ssl/:ro freyp577/atproxy-nginx 
 
-
-TODO 
-need two IP adresses to bind nginx hosts to 
-IP aliasing on network interface, launch each container specifying the IP address to where they will be reachable
-see http://stackoverflow.com/questions/25036895/how-to-expose-docker-containers-ip-and-port-to-outside-docker-host-without-port/25041782#25041782
-(but: different IP adresses externally, not internally!)
-
-or, use docker run --net command
-Docker 1.9 networking feature, transparent multi-host networking
-https://github.com/gesellix/docker-haproxy-network
-
-
-
-http://nginx.org/en/docs/http/configuring_https_servers.html#name_based_https_servers
+ATTN require SNI extension to support two SSL sites for a single IP
+see http://nginx.org/en/docs/http/configuring_https_servers.html#name_based_https_servers
 SSL protocol behaviour. The SSL connection is established before the browser sends an HTTP request and nginx does not know the name of the requested server.
 ... assign a separate IP address for every HTTPS server
 
@@ -87,4 +75,9 @@ the server will know which certificate it should use for the connection. However
 option “--enable-tlsext”
 note: "TLS SNI support enabled" with both stable and latest
 
-https://en.wikipedia.org/wiki/Server_Name_Indication
+
+to start nginx_proxy with blue env (blue=active, green=inactive):
+docker run --env-file /opt/atproxy/bin/blue.env --name=nginx_proxy -d -p 443:443 -v /opt/atproxy/ssl/:/etc/nginx/ssl/:ro freyp577/atproxy-nginx  
+
+https://172.26.0.8:443/ -> default is production
+https://172.26.0.8:443/status/bluegreen.json 
