@@ -5,7 +5,7 @@ function updateconf {
 }
 
 # use environment variable tz to set timezone
-sudo timedatectl set-timezone ${tz:=Europe/Berlin}
+# sudo timedatectl set-timezone ${tz:=Europe/Berlin}
 # causes Failed to create bus connection: No such file or directory
 # https://github.com/docker/docker/issues/12084 
 echo ${tz:=Europe/Berlin} > /config/etc/timezone
