@@ -32,7 +32,8 @@ server {
     #error_page 403 /forbidden.html;
 
     #access_log /var/log/nginx/access.log gl_stg_format;
-    error_log /var/log/nginx/error.log info; #warn; 
+    access_log /var/log/nginx/access_staging.log main;
+    error_log /var/log/nginx/error_staging.log info; #warn; 
     
     # redirecting to upstream nginx, pass real IP on
     # https://rtcamp.com/tutorials/nginx/forwarding-visitors-real-ip/
