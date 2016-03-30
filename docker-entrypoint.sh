@@ -17,5 +17,6 @@ cat << EOF > /usr/share/nginx/html/bluegreen.json
 EOF
 
 echo run "$@"
+echo 
 exec "$@"
 
