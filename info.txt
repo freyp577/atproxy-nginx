@@ -1,4 +1,4 @@
-updated 2016-04-22 by FreyP 
+updated 2016-03-30 by FreyP 
 
 nginx docker container for AT proxy
 
@@ -52,6 +52,7 @@ docker run \
   freemountain/nginx-ssl-proxy
  
 
+
 on vl-at-proxy:
 
 docker run --rm --env-file /opt/atproxy/bin/green.env freyp577/atproxy-nginx ...
@@ -77,7 +78,20 @@ note: "TLS SNI support enabled" with both stable and latest
 
 
 to start nginx_proxy with blue env (blue=active, green=inactive):
-docker run --env-file /opt/atproxy/bin/blue.env --name=nginx_proxy -d -p 443:443 -v /opt/atproxy/ssl/:/etc/nginx/ssl/:ro freyp577/atproxy-nginx  
+docker run --env-file /opt/atproxy/bin/$color.env --name=nginx_proxy -d -p 443:443 -v /opt/atproxy/ssl/:/etc/nginx/ssl/:ro freyp577/atproxy-nginx  
+
+
+to inspect status of running container:
+
+docker exec -it nginx_docker cat /usr/share/nginx/html/bluegreen.json
+
+
+update container on  vl-at-proxy:
+
+bash ./provision.sh --limit=proxy --extra-vars "build_proxy=True"
+
+
+test configuration 
 
 https://172.26.0.8:443/ -> default is production
 https://172.26.0.8:443/status/bluegreen.json 
