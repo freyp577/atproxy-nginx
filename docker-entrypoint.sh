@@ -4,6 +4,9 @@ function updateconf {
   j2 /templates/$1.j2 > $2/$1 
 }
 
+# use environment variable tz to set timezone
+sudo timedatectl set-timezone ${tz:=Europe/Berlin}
+
 echo update nginx conf for $color
 updateconf production.conf /etc/nginx/conf.d/
 updateconf staging.conf /etc/nginx/conf.d/
