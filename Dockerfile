@@ -19,6 +19,9 @@ COPY *.j2 /templates/
 COPY docker-entrypoint.sh /
 RUN chmod o+x /docker-entrypoint.sh
 
+EXPOSE 80 443
+# note: port 80 only for internal and administrative use
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
 
