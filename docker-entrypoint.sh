@@ -5,7 +5,8 @@ function updateconf {
 }
 
 # use environment variable tz to set timezone
-sudo timedatectl set-timezone ${tz:=Europe/Berlin}
+timedatectl set-timezone ${tz:=Europe/Berlin}
+# sudo??
 
 echo update nginx conf for $color
 updateconf production.conf /etc/nginx/conf.d/
