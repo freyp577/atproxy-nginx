@@ -8,7 +8,8 @@ log_format gl_stg_format 'S $remote_addr - $remote_user [$time_local] "$request"
 
 
 server {
-    listen       {{staging}}:443 ssl;
+    #listen       {{staging}}:443 ssl;
+    listen  *:443 ssl;
     server_name  at-acceptance.haufe-ep.de;
     root /usr/share/nginx/html;
     #proxy_read_timeout 600s;
