@@ -61,9 +61,10 @@ server {
 	
     # http://www.cyberciti.biz/faq/custom-nginx-maintenance-page-with-http503/
 	
-    if (-f $document_root/error503.html) {
-      return 503;
-    }
+	# see if is evil
+    #if (-f $document_root/error503.html) {
+    #  return 503;
+    #}
 	
     error_page 503 @maintenance;
     location @maintenance {
@@ -71,7 +72,8 @@ server {
     }
 
     location / {
-      try_files $uri $uri/ =404;
+      return 503;
+      #try_files $uri $uri/ =404;
     }
 
     {% else %}
