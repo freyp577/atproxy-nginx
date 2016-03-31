@@ -38,6 +38,7 @@ server {
     access_log /var/log/nginx/access.log gl_prod_format;
     error_log /var/log/nginx/error.log warn;
 
+    root /usr/share/nginx/html;
     location /status/ {
       try_files $uri =404;
       break;
