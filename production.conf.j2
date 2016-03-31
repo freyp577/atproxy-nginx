@@ -47,6 +47,8 @@ server {
 
     {% if baustelle is not defined or baustelle=='true' %}
     {# must explicitly set baustelle=False to pass request to upstream host #}
+
+    root /usr/share/nginx/html/baustelle;
     location / {
       try_files $uri $uri/ =404;
     }
