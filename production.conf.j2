@@ -1,14 +1,20 @@
 # forward https traffic to upstream nginx
 #
 
-log_format gl_prod_format 'P $remote_addr - $remote_user [$time_local] "$request" '
+log_format gl_prod_format '$remote_addr - $remote_user [$time_local] "$request" '
     '$status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for" "$gzip_ratio" '
-    '<msec=$msec|connection=$connection|connection_requests=$connection_requests|reqlen=$request_length|millis=$request_time|typtes_sent=$bytes_sent>';
+    '<site=prod|msec=$msec|connection=$connection|connection_requests=$connection_requests|reqlen=$request_length|millis=$request_time|typtes_sent=$bytes_sent>';
 
 
 server {
-    listen       {{production}}:443 ssl;
-    server_name  autorentool.haufe.de;
+    listen       {{production_ip | default('127.0.0.1')}}:443 ssl;
+    # note: with Docker 1.10 (and maybe other version) cannot reach nginx server on 127.0.0.1
+    # must bind explicitly to docker managed ip or use '*' to bind to all interfaces
+    # but for Baustellenseite, 127.0.0.1:443 is what we want, so leave this as default
+
+    server_name  {{production_fqdn | default('autorentool.haufe.de') }};
+    # GH-248 comment 22.3. 18:08 rely on TLS SNI support to have multiple domains on one single network interface
+
     #proxy_read_timeout 600s;
     #keepalive_timeout 75; 
     # keepalive timout 75 seconds is default, but do not explicitly set unless there is a reason to do that
@@ -32,22 +38,38 @@ server {
     access_log /var/log/nginx/access.log gl_prod_format;
     error_log /var/log/nginx/error.log warn;
 
-    # redirecting to upstream nginx, pass real IP on
-    # https://rtcamp.com/tutorials/nginx/forwarding-visitors-real-ip/
-    proxy_set_header        X-Real-IP       $remote_addr;
-    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-    
-    proxy_set_header SCHEME $scheme;      # http/https
-    proxy_set_header CLIENT_CERT $ssl_client_raw_cert;
-    proxy_set_header X-Forwarded-Proto https;
-    proxy_set_header X-Scheme $scheme;
-    proxy_set_header Host $host;
-
-  
+    {% if baustelle is not defined or baustelle %}
+    {# must explicitly set baustelle=False to pass request to upstream host #}
     location / {
+      try_files $uri $uri/ =404;
+    }
+
+    {% else %}
+    location / {
+      #proxy_set_header SCHEME $scheme;      # http/https
+      #proxy_set_header CLIENT_CERT $ssl_client_raw_cert;
+      #proxy_set_header X-Forwarded-Proto https;
+      #proxy_set_header X-Scheme $scheme;
+      #proxy_set_header Host $host;
+      # declarations above commented out, as not passing on https but terminating https here
+      # or unsure if needed, or handled differently
+
+      proxy_set_header X-Real-IP $remote_addr;      
+      proxy_set_header X-Forwarded-Proto http;
+      proxy_set_header X-Url-Scheme $scheme;
+
+      # redirecting to upstream nginx, pass real IP on
+      # https://rtcamp.com/tutorials/nginx/forwarding-visitors-real-ip/
+      # and https://suspicious.website/2015/02/18/generating-config-files-with-ansible-and-jinja2/
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header Host $http_host;
+      proxy_set_header X-NginX-Proxy true;
+      proxy_redirect off;  
+      
       proxy_cache_bypass "1";
       proxy_pass https://{{active}};
       break;
     }
+    {% endif %}
 }
 
