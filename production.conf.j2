@@ -39,8 +39,9 @@ server {
     access_log /var/log/nginx/access.log gl_prod_format;
     error_log /var/log/nginx/error.log warn;
 
-    root /usr/share/nginx/html;
+    #root /usr/share/nginx/html;
     location /status/ {
+      root /usr/share/nginx/html;
       try_files $uri =404;
       break;
     }
@@ -48,8 +49,8 @@ server {
     {% if baustelle is not defined or baustelle=='true' %}
     {# must explicitly set baustelle=False to pass request to upstream host #}
 
-    root /usr/share/nginx/html/baustelle;
     location / {
+      root /usr/share/nginx/html/baustelle;
       try_files $uri $uri/ =404;
     }
 

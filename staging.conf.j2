@@ -15,7 +15,7 @@ server {
 
     server_name  {{ staging_fqdn | default('at-staging.haufe-ep.de') }};
 
-    root /usr/share/nginx/html;
+    #root /usr/share/nginx/html;
     #proxy_read_timeout 600s;
     #keepalive_timeout 75; 
     # keepalive timout 75 seconds is default, but do not explicitly set unless there is a reason to do that
@@ -56,8 +56,8 @@ server {
     {% if baustelle is not defined or baustelle=='true' %}
     {# must explicitly set baustelle=False to pass request to upstream host #}
 
-    root /usr/share/nginx/html/baustelle;
     location / {
+      root /usr/share/nginx/html/baustelle;
       try_files $uri $uri/ =404;
     }
 
