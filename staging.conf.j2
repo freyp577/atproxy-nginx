@@ -53,7 +53,7 @@ server {
 
     # baustelle={{baustelle | default('(not set)')}}
  
-    {% if baustelle is not defined or baustelle==true %}
+    {% if baustelle is not defined or baustelle=='true' %}
     {# must explicitly set baustelle=False to pass request to upstream host #}
     location / {
       try_files $uri $uri/ =404;
