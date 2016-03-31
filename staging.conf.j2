@@ -52,11 +52,6 @@ server {
     proxy_set_header Host $host;
 
  
-    location /status/ {
-      try_files $uri =404;
-      break;
-    }
-
     {% if baustelle is not defined or baustelle %}
     {# must explicitly set baustelle=False to pass request to upstream host #}
     location / {

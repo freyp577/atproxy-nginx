@@ -7,7 +7,7 @@ log_format gl_prod_format '$remote_addr - $remote_user [$time_local] "$request" 
 
 
 server {
-    listen       {{production_ip | default('127.0.0.1') }}:443 ssl;
+    listen  {{production_ip | default('127.0.0.1') }}:443 ssl default;
     # note: with Docker 1.10 (and maybe other version) cannot reach nginx server on 127.0.0.1
     # must bind explicitly to docker managed ip or use '*' to bind to all interfaces
     # but for Baustellenseite, 127.0.0.1:443 is what we want, so leave this as default
@@ -37,6 +37,11 @@ server {
 
     access_log /var/log/nginx/access.log gl_prod_format;
     error_log /var/log/nginx/error.log warn;
+
+    location /status/ {
+      try_files $uri =404;
+      break;
+    }
 
     {% if baustelle is not defined or baustelle %}
     {# must explicitly set baustelle=False to pass request to upstream host #}
