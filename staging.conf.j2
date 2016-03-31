@@ -53,11 +53,24 @@ server {
 
     # baustelle={{baustelle | default('(not set)')}}
  
-    {% if baustelle is not defined or baustelle=='true' %}
+    {% if baustelle is not defined or baustelle!='false' %}
     {# must explicitly set baustelle=False to pass request to upstream host #}
+	
+    root /usr/share/nginx/html/baustelle;
+	index error503.html;
+	
+    # http://www.cyberciti.biz/faq/custom-nginx-maintenance-page-with-http503/
+	
+    if (-f $document_root/error503.html) {
+      return 503;
+    }
+	
+    error_page 503 @maintenance;
+    location @maintenance {
+        rewrite ^(.*)$ /error503.html break;
+    }
 
     location / {
-      root /usr/share/nginx/html/baustelle;
       try_files $uri $uri/ =404;
     }
 
