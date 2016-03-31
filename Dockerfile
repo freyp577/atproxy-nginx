@@ -21,6 +21,7 @@ RUN mkdir -p /etc/nginx/ssl
 RUN cd /etc/nginx/conf.d && rm *.conf 
 
 COPY *.j2 /templates/
+COPY baustelle /usr/share/nginx/html/baustelle
 COPY docker-entrypoint.sh /
 RUN chmod o+x /docker-entrypoint.sh
 
