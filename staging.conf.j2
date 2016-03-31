@@ -8,7 +8,7 @@ log_format gl_stg_format '$remote_addr - $remote_user [$time_local] "$request" '
 
 
 server {
-    listen       {{ staging_ip | default('127.0.0.1'}}}:443 ssl;
+    listen       {{ staging_ip | default('127.0.0.1') }}:443 ssl;
     # note: with Docker 1.10 (and maybe other version) cannot reach nginx server on 127.0.0.1
     # must bind explicitly to docker managed ip or use '*' to bind to all interfaces
     # but for Baustellenseite, 127.0.0.1:443 is what we want, so leave this as default
