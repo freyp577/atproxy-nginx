@@ -14,6 +14,9 @@ RUN easy_install j2cli
 EXPOSE 80 443
 # note: port 80 for internal and administrative use
 
+RUN useradd atproxy
+USER atproxy
+
 RUN mkdir -p /etc/nginx/ssl
 # leave empty, used mount at runtime from docker host
 #VOLUME /etc/nginx/ssl
