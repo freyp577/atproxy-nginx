@@ -8,8 +8,12 @@ function updateconf {
 # sudo timedatectl set-timezone ${tz:=Europe/Berlin}
 # causes Failed to create bus connection: No such file or directory
 # https://github.com/docker/docker/issues/12084 
-echo ${tz:=Europe/Berlin} >/etc/timezone
-sudo dpkg-reconfigure -f noninteractive tzdata
+#
+# see https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/
+# should not use sudo - unpredictable TTY and signal-forwarding benavior
+# so moved the following to Dockerfile itself, before switching to user atproxy
+#echo ${tz:=Europe/Berlin} >/etc/timezone
+#sudo dpkg-reconfigure -f noninteractive tzdata
 
 echo update nginx conf for $color
 updateconf production.conf /etc/nginx/conf.d/
