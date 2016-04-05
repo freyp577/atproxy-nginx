@@ -9,7 +9,7 @@ function updateconf {
 # causes Failed to create bus connection: No such file or directory
 # https://github.com/docker/docker/issues/12084 
 echo ${tz:=Europe/Berlin} >/etc/timezone
-dpkg-reconfigure -f noninteractive tzdata
+sudo dpkg-reconfigure -f noninteractive tzdata
 
 echo update nginx conf for $color
 updateconf production.conf /etc/nginx/conf.d/
