@@ -83,7 +83,7 @@ docker run --env-file /opt/atproxy/bin/$color.env --name=nginx_proxy -d -p 443:4
 
 to inspect status of running container:
 
-docker exec -it nginx_docker cat /usr/share/nginx/html/bluegreen.json
+docker exec -it nginx_proxy cat /usr/share/nginx/html/bluegreen.json
 
 
 update container on  vl-at-proxy:
