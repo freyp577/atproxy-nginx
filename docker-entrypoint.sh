@@ -15,12 +15,15 @@ function updateconf {
 #echo ${tz:=Europe/Berlin} >/etc/timezone
 #sudo dpkg-reconfigure -f noninteractive tzdata
 
-echo update nginx conf for $color
+# workaround for locale: Cannot set LC_CTYPE to default locale: No such file or directory
+locale-gen de_DE.UTF-8
+
+#echo update nginx conf for $color
 updateconf production.conf /etc/nginx/conf.d/
 updateconf staging.conf /etc/nginx/conf.d/
 
 mkdir -p /usr/share/nginx/html/status
-echo update bluegreen.txt for $color 
+#echo update bluegreen.txt for $color 
 echo $color >/usr/share/nginx/html/status/bluegreen.txt 
 
 echo update bluegreen.txt for $color `date '+%Y-%m-%dT%H:%M:%S'`
@@ -28,7 +31,7 @@ cat << EOF > /usr/share/nginx/html/status/bluegreen.json
 {"active": "$color", "started": "`date '+%Y-%m-%dT%H:%M:%S'`"} 
 EOF
 
-echo run "$@"
-echo 
+#echo run "$@"
+#echo 
 exec "$@"
 
