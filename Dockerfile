@@ -8,11 +8,20 @@
 FROM nginx:latest
 
 RUN apt-get update --yes && \
-    apt-get install --yes python-dev python-setuptools 
+    apt-get install --yes locales python-dev python-setuptools 
 RUN easy_install j2cli
 
 EXPOSE 80 443
 # note: port 80 for internal and administrative use
+
+# want date values (and other) in german layout
+# see troubles with nginx access log and forwarding / interpreting with graylog 
+RUN locale-gen de_DE.UTF-8
+COPY ./default_locale /etc/default/locale
+RUN chmod 0755 /etc/default/locale
+ENV LC_ALL=de_DE.UTF-8
+ENV LANG=de_DE.UTF-8
+ENV LANGUAGE=de_DE.UTF-8
 
 # set timezone
 ENV TZ=Europe/Berlin
@@ -34,6 +43,7 @@ RUN mkdir -p /templates && \
   mkdir -p /var/cache/nginx && \
   mkdir -p /var/log/nginx 
 
+COPY nginx.conf /etc/nginx/
 COPY docker-entrypoint.sh /
 COPY *.j2 /templates/
 COPY baustelle /usr/share/nginx/html/baustelle
