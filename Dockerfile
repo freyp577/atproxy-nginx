@@ -15,11 +15,12 @@ EXPOSE 80 443
 # note: port 80 for internal and administrative use
 
 # set timezone
-#sudo timedatectl set-timezone ${tz:=Europe/Berlin}
+ENV TZ=Europe/Berlin
+#sudo timedatectl set-timezone ${TZ}
 # causes Failed to create bus connection: No such file or directory
 # https://github.com/docker/docker/issues/12084
 #
-RUN echo ${TZ:=Europe/Berlin} >/etc/timezone && \
+RUN echo ${TZ} >/etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata
 
 RUN mkdir -p /etc/nginx/ssl
