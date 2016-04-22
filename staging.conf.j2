@@ -4,7 +4,7 @@
 #log_format perf '$remote_addr $status - $request_length $bytes_sent';
 log_format gl_stg_format 'atproxy: $remote_addr - $remote_user [$time_local] "$request" '
     '$status $body_bytes_sent "$http_referer" "$http_user_agent" "$http_x_forwarded_for" "$gzip_ratio" '
-    '<site=staging|msec=$msec|connection=$connection|connection_requests=$connection_requests|reqlen=$request_length|millis=$request_time|bytes_sent=$bytes_sent>';
+    '<site=staging|upstream=$upstream_addr|msec=$msec|connection=$connection|connection_requests=$connection_requests|reqlen=$request_length|millis=$request_time|bytes_sent=$bytes_sent>';
 # note:
 # use of time_iso8601 troublesome with graylog extractor/date converters: timezone and T between date and time
 
