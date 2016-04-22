@@ -100,7 +100,7 @@ server {
       proxy_redirect off;
 
       proxy_cache_bypass "1";
-      proxy_pass http://{{active}};
+      proxy_pass http://{{inactive}};
       break;
     }
     {% endif %}
